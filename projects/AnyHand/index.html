@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnyHand: A Large-Scale Synthetic Dataset for RGB(-D) Hand Pose Estimation</title>
+  <meta name="description" content="AnyHand is a large-scale synthetic dataset for RGB(-D) hand pose estimation with 6.3M images covering diverse poses, appearances, and hand-object interactions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=JetBrains+Mono:wght@400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafaf8;
+      --fg: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #2563eb;
+      --border: #e5e5e0;
+      --card-bg: #f3f3ef;
+      --code-bg: #2a2a2a;
+      --code-fg: #e0e0e0;
+      --max-w: 800px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* --- Hero --- */
+    .hero {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 72px 24px 36px;
+      text-align: center;
+    }
+
+    .venue-badge {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1.5px solid var(--accent);
+      border-radius: 100px;
+      padding: 4px 16px;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 700;
+      font-size: clamp(26px, 5vw, 40px);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    h1 .highlight {
+      background: linear-gradient(120deg, #2563eb 0%, #7c3aed 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* --- Authors --- */
+    .authors {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .authors a { color: var(--fg); text-decoration: none; border-bottom: 1px dashed var(--border); transition: border-color 0.2s; }
+    .authors a:hover { border-color: var(--accent); color: var(--accent); }
+    .authors .me { font-weight: 700; }
+
+    .affiliations {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    /* --- Beta note --- */
+    .beta-note {
+      max-width: 580px;
+      margin: 0 auto 28px;
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 14px;
+      color: #78350f;
+      text-align: left;
+      line-height: 1.6;
+    }
+    .beta-note strong { color: #92400e; }
+
+    /* --- Link buttons --- */
+    .links {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .link-btn.primary { background: var(--fg); color: #fff; }
+    .link-btn.primary:hover { background: #333; transform: translateY(-1px); }
+    .link-btn.secondary { background: var(--card-bg); color: var(--fg); border: 1px solid var(--border); }
+    .link-btn.secondary:hover { background: #eaeae5; transform: translateY(-1px); }
+    .link-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+
+    /* --- Divider --- */
+    .divider { max-width: var(--max-w); margin: 0 auto; border: none; border-top: 1px solid var(--border); }
+
+    /* --- Sections --- */
+    section { max-width: var(--max-w); margin: 0 auto; padding: 40px 24px; }
+
+    section h2 {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 600;
+      font-size: 24px;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    section h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin: 28px 0 8px;
+    }
+
+    section p { color: #333; margin-bottom: 14px; }
+    section p:last-child { margin-bottom: 0; }
+
+    /* --- Teaser --- */
+    .teaser { max-width: 920px; margin: 0 auto; padding: 36px 24px 0; text-align: center; }
+    .teaser img { width: 100%; border-radius: 10px; border: 1px solid var(--border); }
+
+    /* --- Figure placeholders --- */
+    .fig-placeholder {
+      width: 100%;
+      background: var(--card-bg);
+      border: 2px dashed #d1d1cc;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      gap: 5px;
+    }
+    .fig-placeholder svg { width: 26px; height: 26px; color: #ccc; margin-bottom: 2px; }
+    .fig-placeholder .ph-label { font-weight: 600; font-size: 11px; letter-spacing: .6px; text-transform: uppercase; color: #c0c0bb; }
+    .fig-placeholder .ph-path  { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #bbb; }
+    .fig-placeholder .ph-note  { font-size: 12px; color: #ccc; }
+
+    .fig-caption {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 10px;
+      font-style: italic;
+      line-height: 1.5;
+    }
+    .fig-caption strong { font-style: normal; color: #444; }
+
+    /* --- Stats grid --- */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+    .stat-val { font-size: 22px; font-weight: 700; color: var(--accent); }
+    .stat-lbl { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+    /* --- Tables --- */
+    .table-wrap { overflow-x: auto; margin: 14px 0 6px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 460px; }
+    th {
+      background: var(--card-bg);
+      padding: 8px 12px;
+      text-align: center;
+      font-weight: 600;
+      border-bottom: 2px solid var(--border);
+      white-space: nowrap;
+    }
+    th.left { text-align: left; }
+    td { padding: 7px 12px; border-bottom: 1px solid var(--border); text-align: center; }
+    td.left { text-align: left; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(37,99,235,0.03); }
+    .rank1 { background: rgba(255,215,0,0.22); font-weight: 700; }
+    .rank2 { background: rgba(192,192,192,0.22); font-weight: 700; }
+    .rank3 { background: rgba(205,127,50,0.16); }
+    tr.ours td { background: rgba(37,99,235,0.06); font-weight: 600; }
+    tr.sep td  { border-top: 2px solid #ddd; }
+    .table-note { font-size: 13px; color: var(--muted); font-style: italic; margin-top: 6px; }
+
+    /* --- BibTeX --- */
+    .bibtex-container { background: var(--code-bg); border-radius: 10px; overflow: hidden; }
+    .bibtex-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 16px; background: #222;
+      font-size: 13px; color: #888; font-family: 'JetBrains Mono', monospace;
+    }
+    .copy-btn {
+      background: transparent; border: 1px solid #555; color: #aaa;
+      font-size: 12px; font-family: 'DM Sans', sans-serif;
+      padding: 4px 12px; border-radius: 5px; cursor: pointer; transition: all 0.2s;
+    }
+    .copy-btn:hover { background: #444; color: #fff; }
+    .copy-btn.copied { background: #16a34a; border-color: #16a34a; color: #fff; }
+    .bibtex-code {
+      padding: 16px 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; line-height: 1.6;
+      color: var(--code-fg); overflow-x: auto; white-space: pre;
+    }
+
+    /* --- Footer --- */
+    footer {
+      max-width: var(--max-w); margin: 0 auto;
+      padding: 24px 24px 56px;
+      text-align: center; font-size: 13px; color: var(--muted);
+    }
+    footer a { color: var(--muted); }
+
+    /* --- Animations --- */
+    .hero, .teaser, section { animation: fadeUp 0.55s ease both; }
+    .hero   { animation-delay: 0s; }
+    .teaser { animation-delay: 0.08s; }
+    section { animation-delay: 0.14s; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 44px 18px 28px; }
+      section { padding: 28px 18px; }
+      .links { gap: 8px; }
+      .link-btn { padding: 9px 14px; font-size: 14px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <!-- <div class="venue-badge">ECCV 2026</div> -->
+
+  <h1>
+    <span class="highlight">AnyHand</span>: A Large-Scale Synthetic Dataset<br>for RGB(-D) Hand Pose Estimation
+  </h1>
+
+  <p class="authors">
+    <a href="https://chen-si-cs.github.io/">Chen Si</a><sup>1</sup> &nbsp;·&nbsp;
+    <a href="https://chen-si-cs.github.io/">Yulin Liu</a><sup>1</sup> &nbsp;·&nbsp;
+    <a href="https://albertboai.com/">Bo Ai</a><sup>1</sup> &nbsp;·&nbsp;
+    <a href="#">Jianwen Xie</a><sup>2</sup><br>
+    <a href="https://rolpotamias.github.io/">Rolandos Alexandros Potamias</a><sup>3</sup> &nbsp;·&nbsp;
+    <a href="https://physicalvision.github.io/people/~chuanxia">Chuanxia Zheng</a><sup>4</sup> &nbsp;·&nbsp;
+    <a href="https://cseweb.ucsd.edu/~haosu/">Hao Su</a><sup>1</sup>
+  </p>
+
+  <p class="affiliations">
+    <sup>1</sup>UC San Diego &nbsp;&nbsp;
+    <sup>2</sup>[Affiliation] &nbsp;&nbsp;
+    <sup>3</sup>Imperial College London &nbsp;&nbsp;
+    <sup>4</sup>Nanyang Technological University
+  </p>
+
+  <div class="beta-note">
+    <strong>🚧 Beta Release &nbsp;—</strong>
+    We are currently releasing fine-tuned checkpoints of <a class="paper-link" href="https://arxiv.org/abs/2312.05251">HaMeR</a> and <a class="paper-link" href="https://arxiv.org/abs/2409.12259">WiLoR</a>
+    co-trained with AnyHand, ready for in-the-wild hand pose estimation.
+    The full dataset, training code, and arXiv preprint are coming soon -- stay tuned!
+  </div>
+
+  <div class="links">
+    <a href="#" class="link-btn primary">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+      </svg>
+      Paper
+    </a>
+    <!-- <a href="#" class="link-btn secondary">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z"/>
+      </svg>
+      arXiv
+    </a> -->
+    <a href="#" class="link-btn secondary">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"/>
+      </svg>
+      Code
+    </a>
+    <a href="#" class="link-btn secondary">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+      </svg>
+      Checkpoints
+    </a>
+    <a href="#" class="link-btn secondary">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75"/>
+      </svg>
+      Dataset
+    </a>
+  </div>
+</div>
+
+<!-- ===== TEASER ===== -->
+<div class="teaser">
+  <!--
+    ┌─ REPLACEMENT ───────────────────────────────────────────────────┐
+    │ teaser figure                                                  │
+    └────────────────────────────────────────────────────────────────┘
+  -->
+  <img src="figs/teaser.svg" alt="AnyHand teaser figure" style="width:100%; height:auto; display:block;">
+  <p class="fig-caption">
+    We propose <strong>AnyHand</strong> as a large-scale synthetic RGB-D dataset that substantially expands coverage of hand pose, hand-object interactions, occlusions, and viewpoint variations in the wild.
+    When used to co-train state-of-the-art models such as <a class="paper-link" href="https://arxiv.org/abs/2312.05251">HaMeR</a> and <a class="paper-link" href="https://arxiv.org/abs/2409.12259">WiLoR</a>, it yields consistent improvements and supports robust 3D hand pose reconstruction across diverse real-world scenes.
+    Predicted hand meshes from WiLoR co-trained with <strong>AnyHand</strong> are shown in pink.
+  </p>
+</div>
+
+<hr class="divider" style="margin-top: 36px;">
+
+<!-- ===== ABSTRACT ===== -->
+<section>
+  <h2>Abstract</h2>
+  <p>
+  We present <strong>AnyHand</strong>, a large-scale synthetic dataset designed to advance the state of the art in <strong>3D hand pose estimation</strong> from both <strong>RGB-only</strong> and <strong>RGB-D</strong> inputs. While recent foundation-style approaches have shown that increasing the quantity and diversity of training data can markedly improve performance and robustness, existing real-world datasets remain limited in coverage, and prior synthetic datasets rarely provide <strong>occlusions</strong>, <strong>arm details</strong>, and <strong>aligned depth</strong> together at scale.
+</p>
+
+<p>
+  To address this bottleneck, <strong>AnyHand</strong> contains <strong>2.5M single-hand</strong> images and <strong>4.1M hand-object interaction</strong> RGB-D images, all with rich geometric annotations. In the <strong>RGB-only</strong> setting, we show that augmenting the original training sets of existing baselines with <strong>AnyHand</strong> yields significant gains on multiple benchmarks, including <strong>FreiHAND</strong> and <strong>HO-3D</strong>, even when keeping the architecture and training scheme fixed.
+</p>
+
+<p>
+  More importantly, models trained with <strong>AnyHand</strong> generalize better to the out-of-domain <strong>HO-Cap</strong> dataset without any fine-tuning. We further introduce a <strong>lightweight depth fusion module</strong> that can be easily integrated into existing RGB-based models. Trained with <strong>AnyHand</strong>, the resulting <strong>RGB-D</strong> model achieves superior performance on <strong>HO-3D</strong>, demonstrating both the value of depth integration and the effectiveness of our synthetic data.
+</p>
+</section>
+
+<hr class="divider">
+
+<!-- ===== DATASET ===== -->
+<section>
+  <h2>Dataset</h2>
+  <p>
+    AnyHand consists of two complementary splits.
+    <strong>AnyHand-Single</strong> (2.1M images) covers isolated hand scenes across diverse backgrounds
+    and viewpoints. <strong>AnyHand-Interact</strong> (4.2M images) adds hand-object interaction
+    scenarios sourced from GraspXL's physics-based simulation with over 10M sequences and 500K+ objects.
+    Both splits are rendered with full multi-modal annotations: RGB, depth, mask, bounding box,
+    camera intrinsics, and 3D pose/shape.
+  </p>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-val">6.3M</div><div class="stat-lbl">Total images</div></div>
+    <div class="stat-card"><div class="stat-val">47,438</div><div class="stat-lbl">Hand shapes</div></div>
+    <div class="stat-card"><div class="stat-val">10,240</div><div class="stat-lbl">Hand textures</div></div>
+    <div class="stat-card"><div class="stat-val">&gt;500K</div><div class="stat-lbl">Interaction objects</div></div>
+    <div class="stat-card"><div class="stat-val">10M+</div><div class="stat-lbl">Interaction sequences</div></div>
+    <div class="stat-card"><div class="stat-val">1,270</div><div class="stat-lbl">Backgrounds</div></div>
+  </div>
+
+  <!--
+    ┌─ REPLACE THIS BLOCK ──────────────────────────────────────────┐
+    │ <img src="figs/pipeline.png" alt="AnyHand generation pipeline"│
+    │      style="width:100%;border-radius:8px;                     │
+    │             border:1px solid var(--border);">                  │
+    └───────────────────────────────────────────────────────────────┘
+  -->
+  <div class="fig-placeholder" style="height:230px;">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5"/></svg>
+    <span class="ph-label">Pipeline Figure</span>
+    <span class="ph-path">figs/pipeline.png</span>
+    <span class="ph-note">Shape sampling → DPoser-Hand poses → Handy textures → Blender render → annotations</span>
+  </div>
+  <p class="fig-caption" style="margin-top: 10px;">
+    <strong>Generation pipeline.</strong> Hand shapes are sampled from real-dataset MANO statistics;
+    poses from a DPoser-Hand diffusion prior; appearances via 10,240 Handy textures and 254 SMPLitex
+    arm textures; scenes rendered in Blender with randomized lighting (1–5 lights), backgrounds, and
+    camera parameters (FOV 30°–40°, distance 0.6–1.0 m).
+  </p>
+</section>
+
+<hr class="divider">
+
+<!-- ===== QUALITATIVE ===== -->
+<section>
+  <h2>Qualitative Results</h2>
+
+  <h3 style="margin-top: 0;">Dataset samples</h3>
+  <p>
+    AnyHand covers a wide range of hand poses, skin tones, viewpoints, lighting conditions, and
+    interaction scenarios. Each rendered image is paired with a 3D hand mesh, 2D joint annotations,
+    and a depth map.
+  </p>
+  <!--
+    ┌─ REPLACE THIS BLOCK ──────────────────────────────────────────┐
+    │ <img src="figs/fig1_dataset_vis.png" alt="Dataset samples"    │
+    │      style="width:100%;border-radius:8px;                     │
+    │             border:1px solid var(--border);margin-top:14px;"> │
+    └───────────────────────────────────────────────────────────────┘
+  -->
+  <img src="figs/single_hand_demo.svg" alt="AnyHand-Single Demo Figure" style="width:100%; height:auto; display:block;">
+  <p class="fig-caption" style="margin-top: 10px;">
+    Qualitative results for <strong>AnyHand-Single</strong>. The dataset covers diverse single-hand poses, viewpoints, textures, and scene contexts.
+  </p>
+  <img src="figs/interact_demo.svg" alt="AnyHand teaser figure" style="width:100%; height:auto; display:block;">
+  <p class="fig-caption" style="margin-top: 10px;">
+    Qualitative results for <strong>AnyHand-Interact</strong>. The dataset captures diverse hand-object interactions with varied grasps, objects, and occlusion patterns.
+  </p>
+
+  <h3>Comparisons</h3>
+  <p>
+    Co-training WiLoR with AnyHand substantially improves mesh-to-image alignment on real-world
+    images — recovering more accurate hand scale, palm width, finger thickness, and articulation,
+    especially under hand-object interaction and challenging viewpoints.
+  </p>
+  <!--
+    ┌─ REPLACE THIS BLOCK ──────────────────────────────────────────┐
+    │ <img src="figs/fig2_inthewild.png" alt="In-the-wild"          │
+    │      style="width:100%;border-radius:8px;                     │
+    │             border:1px solid var(--border);margin-top:14px;"> │
+    └───────────────────────────────────────────────────────────────┘
+  -->
+  <img src="figs/in-the-wild-vis.svg" alt="In-the-wild" style="width:100%; height:auto; display:block;">
+  <p class="fig-caption" style="margin-top: 10px;">
+    <strong>In-the-wild qualitative comparisons.</strong>
+    WiLoR w/ AnyHand (pink) vs. original WiLoR (blue) and HaMeR (white).
+  </p>
+</section>
+
+<hr class="divider">
+
+<!-- ===== RESULTS =====
+<section>
+  <h2>Results</h2>
+
+  <h3 style="margin-top:0;">FreiHand</h3>
+  <p style="font-size:14px; color:var(--muted); margin-bottom:0;">
+    Co-training yields a <strong>7.6% PA-MPJPE improvement</strong> for HaMeR and
+    <strong>1.9%</strong> for WiLoR.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="left">Method</th>
+          <th>PA-MPJPE ↓</th><th>PA-MPVPE ↓</th><th>F@5mm ↑</th><th>F@15mm ↑</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="left">Mesh Graphormer</td><td>5.9</td><td>6.0</td><td>0.764</td><td>0.986</td></tr>
+        <tr><td class="left">MobRecon</td><td>5.7</td><td>5.8</td><td>0.784</td><td>0.986</td></tr>
+        <tr><td class="left">HaMeR <span style="font-size:12px;color:#999">CVPR24</span></td><td>6.0</td><td>5.7</td><td>0.785</td><td>0.990</td></tr>
+        <tr><td class="left">Hamba <span style="font-size:12px;color:#999">NeurIPS24</span></td><td class="rank3">5.7</td><td class="rank2">5.3</td><td class="rank3">0.806</td><td class="rank2">0.992</td></tr>
+        <tr><td class="left">WiLoR <span style="font-size:12px;color:#999">CVPR25</span></td><td class="rank2">5.5</td><td class="rank1">5.1</td><td class="rank1">0.825</td><td class="rank1">0.993</td></tr>
+        <tr class="sep ours"><td class="left">HaMeR w/ AnyHand</td><td>5.545</td><td>5.246</td><td>0.811</td><td>0.993</td></tr>
+        <tr class="ours"><td class="left">WiLoR w/ AnyHand</td><td class="rank1">5.394</td><td class="rank3">5.046</td><td class="rank2">0.827</td><td class="rank1">0.994</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="table-note">
+    <span style="background:rgba(255,215,0,0.22);padding:1px 6px;border-radius:3px;">Gold</span> 1st &nbsp;
+    <span style="background:rgba(192,192,192,0.22);padding:1px 6px;border-radius:3px;">Silver</span> 2nd &nbsp;
+    <span style="background:rgba(205,127,50,0.16);padding:1px 6px;border-radius:3px;">Bronze</span> 3rd &nbsp;
+    <span style="background:rgba(37,99,235,0.06);padding:1px 6px;border-radius:3px;font-weight:600;">Blue</span> ours
+  </p>
+
+  <h3>HO-3D v2</h3>
+  <p style="font-size:14px; color:var(--muted); margin-bottom:0;">
+    AnyHand reduces PA-MPJPE by <strong>3.0%</strong> for HaMeR and <strong>1.9%</strong> for WiLoR.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="left">Method</th>
+          <th>AUCj ↑</th><th>PA-MPJPE ↓</th><th>AUCv ↑</th><th>PA-MPVPE ↓</th><th>F@5 ↑</th><th>F@15 ↑</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="left">AMVUR</td><td>0.835</td><td>8.3</td><td>0.836</td><td>8.2</td><td>0.608</td><td>0.965</td></tr>
+        <tr><td class="left">HaMeR <span style="font-size:12px;color:#999">CVPR24</span></td><td>0.846</td><td>7.7</td><td>0.841</td><td>7.9</td><td>0.635</td><td>0.980</td></tr>
+        <tr><td class="left">Hamba <span style="font-size:12px;color:#999">NeurIPS24</span></td><td class="rank3">0.850</td><td class="rank3">7.5</td><td class="rank3">0.843</td><td class="rank3">7.7</td><td class="rank3">0.648</td><td class="rank3">0.982</td></tr>
+        <tr><td class="left">WiLoR <span style="font-size:12px;color:#999">CVPR25</span></td><td class="rank2">0.851</td><td class="rank2">7.5</td><td class="rank2">0.846</td><td class="rank2">7.7</td><td class="rank2">0.646</td><td class="rank2">0.983</td></tr>
+        <tr class="sep ours"><td class="left">HaMeR w/ AnyHand</td><td class="rank2">0.851</td><td>7.471</td><td class="rank3">0.847</td><td>7.676</td><td>0.645</td><td class="rank1">0.984</td></tr>
+        <tr class="ours"><td class="left">WiLoR w/ AnyHand</td><td class="rank1">0.853</td><td class="rank1">7.355</td><td class="rank1">0.848</td><td class="rank1">7.624</td><td class="rank1">0.649</td><td class="rank1">0.984</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Sim-and-real co-training ratio</h3>
+  <p style="font-size:14px; color:#333;">
+    HaMeR trained with a fixed 2.7M-sample budget, varying the AnyHand proportion.
+    Mixed settings (25–75%) consistently outperform both the real-only baseline (0%) and
+    fully synthetic training (100%), confirming AnyHand works best as a complementary source.
+  </p>
+  
+  <div class="fig-placeholder" style="height:200px; margin-top:10px;">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg>
+    <span class="ph-label">Fig. 3 — Mixing Ratio Study</span>
+    <span class="ph-path">figs/fig3_mixing_ratio.png</span>
+    <span class="ph-note">FreiHand · HO-3D v2 · HO-Cap — error vs. AnyHand proportion (0–100%)</span>
+  </div>
+  <p class="fig-caption" style="margin-top:10px;">
+    Error (PA-MPJPE / PA-MPVPE) vs. AnyHand mixing ratio under a fixed 2.7M training budget.
+  </p>
+</section> -->
+
+<hr class="divider">
+
+<!-- ===== BIBTEX ===== -->
+<section>
+  <h2>BibTeX</h2>
+  <div class="bibtex-container">
+    <div class="bibtex-header">
+      <span>citation.bib</span>
+      <button class="copy-btn" onclick="copyBibtex(this)">Copy</button>
+    </div>
+    <div class="bibtex-code" id="bibtex">@misc{si2026anyhand,
+  title         = {AnyHand: A Large-Scale Synthetic Dataset for RGB(-D) Hand Pose Estimation},
+  author        = {Si, Chen and Liu, Yulin and Ai, Bo and Xie, Jianwen and
+                   Potamias, Rolandos Alexandros and Zheng, Chuanxia and Su, Hao},
+  year          = {2026},
+  eprint        = {XXXX.XXXXX},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV}
+}</div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <a href="../../index.html">← Chen Si's homepage</a>
+  &nbsp;·&nbsp;
+  Template adapted from <a href="https://nerfies.github.io" target="_blank">Nerfies</a>.
+</footer>
+
+<script>
+  function copyBibtex(btn) {
+    const text = document.getElementById('bibtex').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>
