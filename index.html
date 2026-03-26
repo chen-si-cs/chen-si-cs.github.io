@@ -70,10 +70,17 @@
                     </p>
 
                     <p style="text-align:center; margin-top: 0px; margin-bottom: 0px;">
-                      <a href="chen.si.cse@gmail.com">Email</a> &nbsp;/&nbsp;
+                      <script>
+                        const user = "chen.si.cse";
+                        const domain = "gmail.com";
+                        const link = document.createElement("a");
+                        link.href = "mailto:" + user + "@" + domain;
+                        link.textContent = "Email";
+                        document.currentScript.replaceWith(link);
+                      </script> &nbsp;/&nbsp;
                       <a href="data/ChenSi-CV.pdf">CV</a> &nbsp;/&nbsp;
-                      <a href="https://github.com/chen-si-cs">Github</a> &nbsp;/&nbsp;
-                      <a href="https://scholar.google.com/citations?user=T4cfGQkAAAAJ">Google Scholar</a>
+                      <a href="https://github.com/chen-si-cs">GitHub</a> &nbsp;/&nbsp;
+                      <a href="https://scholar.google.com/citations?user=T4cfGQkAAAAJ">Google Scholar</a> &nbsp;/&nbsp;
                       <a href="https://www.linkedin.com/in/chen-si-780648248/">LinkedIn</a>
                     </p>
                   </td>
