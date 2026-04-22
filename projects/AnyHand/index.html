@@ -277,13 +277,13 @@
   </h1>
 
   <p class="authors">
-    <a href="https://chen-si-cs.github.io/">Chen Si</a><sup>1</sup> &nbsp;·&nbsp;
-    <a href="https://liuyulinn.github.io/">Yulin Liu</a><sup>1</sup> &nbsp;·&nbsp;
+    <a href="https://chen-si-cs.github.io/">Chen Si</a> *<sup>1</sup> &nbsp;·&nbsp;
+    <a href="https://liuyulinn.github.io/">Yulin Liu</a> *<sup>1</sup> &nbsp;·&nbsp;
     <a href="https://albertboai.com/">Bo Ai</a><sup>1</sup> &nbsp;·&nbsp;
     <a href="http://www.stat.ucla.edu/~jxie/">Jianwen Xie</a><sup>2</sup><br>
     <a href="https://rolpotamias.github.io/">Rolandos Alexandros Potamias</a><sup>3</sup> &nbsp;·&nbsp;
     <a href="https://physicalvision.github.io/people/~chuanxia">Chuanxia Zheng</a><sup>4</sup> &nbsp;·&nbsp;
-    <a href="https://cseweb.ucsd.edu/~haosu/">Hao Su</a><sup>1</sup>
+    <a href="https://www.haosu.ai/">Hao Su</a><sup>1</sup>
   </p>
 
   <p class="affiliations">
@@ -295,9 +295,9 @@
 
   <div class="beta-note">
     <strong>🚧 Beta Release &nbsp;—</strong>
-    We are currently releasing fine-tuned checkpoints of <a class="paper-link" href="https://arxiv.org/abs/2312.05251">HaMeR</a> and <a class="paper-link" href="https://arxiv.org/abs/2409.12259">WiLoR</a>
-    co-trained with AnyHand, ready for in-the-wild hand pose estimation.
-    The full dataset, training code, and arXiv preprint are coming soon -- stay tuned!
+    Fine-tuned <a class="paper-link" href="https://arxiv.org/abs/2312.05251">HaMeR</a> and <a class="paper-link" href="https://arxiv.org/abs/2409.12259">WiLoR</a> checkpoints co-trained with AnyHand are now available, along with a <a class="paper-link" href="https://colab.research.google.com/drive/1O71DiPWzNlIflCVTViJeXp2VnfffHnTt">Colab demo</a> you can run in your browser.
+    The full dataset, generation pipeline, are AnyHandNet-D are still on the way.
+    Please <a class="paper-link" href="https://forms.gle/4hUHmTcLUERzr1cV8">sign up here</a> for a one-email-per-release heads-up.
   </div>
 
   <div class="links">
@@ -307,29 +307,30 @@
       </svg>
       Paper
     </a>
-    <!-- <a href="#" class="link-btn secondary">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z"/>
-      </svg>
-      arXiv
-    </a> -->
     <a href="https://github.com/chen-si-cs/AnyHand" class="link-btn secondary">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"/>
       </svg>
       Code
     </a>
-    <a href="#" class="link-btn secondary">
+    <a href="https://huggingface.co/chen-si-02/AnyHand-Models" class="link-btn secondary">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/>
       </svg>
       Checkpoints
     </a>
-    <a href="#" class="link-btn secondary">
+    <a href="https://huggingface.co/chen-si-02/AnyHand-Dataset" class="link-btn secondary">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75"/>
       </svg>
       Dataset
+    </a>
+    <a href="https://colab.research.google.com/drive/1O71DiPWzNlIflCVTViJeXp2VnfffHnTt" class="link-btn secondary">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+        <path d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z"/>
+      </svg>
+      Colab Demo
     </a>
   </div>
 </div>
