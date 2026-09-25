@@ -117,6 +117,8 @@
                   <td style="padding-top: 0px; padding-bottom: 10px; padding-left: 20px; padding-right: 20px; width:100%; vertical-align:middle">
                     <h2><b>News</b></h2>
                     <ul class="news-list">
+                      <li>[2026/09] 🎉 <strong>AnyHand</strong> was accepted to <strong>NeurIPS 2026</strong>!</li>
+                      <li>[2026/09] 🎤 I will deliver a <strong>long oral talk</strong> on <strong>MiNAF</strong> at <strong>Interspeech 2026</strong>!</li>
                       <li>[2026/08] 🎓 I will join the <a href="https://physicalvision.github.io/">PVG</a> group at <a href="https://www.ntu.edu.sg/">NTU</a> as a Ph.D. student, supported by the prestigious <a href="https://www.ntu.edu.sg/admissions/graduate/financialmatters/scholarships/npgs">NPGS Scholarship</a>!</li>
                       <li>[2026/06] 🎓 Graduated from <a href="https://ucsd.edu/">UC San Diego</a> with an M.S. in Computer Science!</li>
                       <li>[2026/06] 🎉 <strong>MiNAF</strong> was accepted to the <strong>Interspeech 2026 Long Paper Track</strong>!</li>
@@ -168,6 +170,7 @@
                     <span class="papertitle">
                       AnyHand: A Large-Scale Synthetic Dataset for RGB(-D) Hand Pose Estimation
                     </span>
+                    <span class="venue-tab">NeurIPS 2026</span>
                     <br>
                     <i>
                       <span class="strong-author">Chen Si*</span>, 
@@ -468,7 +471,7 @@
                       Thank you for visiting! Feel free to contact me if you have any questions.
                       <br>
                       This website is designed based on <a href="https://jonbarron.info/" style="font-size: 12px;">Jon Barron</a>.
-                      Last Update: Jul, 2026
+                      Last Update: Sep, 2026
                     </p>
                   </td>
                 </tr>
@@ -479,5 +482,23 @@
         </tr>
       </tbody>
     </table>
+    <script>
+      const newsList = document.querySelector('.news-list');
+      const visibleNewsItems = 6;
+
+      function sizeNewsList() {
+        if (!newsList || newsList.children.length <= visibleNewsItems) return;
+
+        newsList.style.maxHeight = 'none';
+        const lastVisibleItem = newsList.children[visibleNewsItems - 1];
+        const visibleHeight = lastVisibleItem.getBoundingClientRect().bottom
+          - newsList.getBoundingClientRect().top;
+        newsList.style.maxHeight = `${Math.ceil(visibleHeight)}px`;
+      }
+
+      sizeNewsList();
+      window.addEventListener('resize', sizeNewsList);
+      document.fonts?.ready.then(sizeNewsList);
+    </script>
   </body>
 </html>
